@@ -6,7 +6,6 @@ transaction="01000000000101c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d10
 block="25"
 address="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP" 
 utxo_txid=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.txid')
-utxo_vout=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.vout[]')
 
 change_address=$(bitcoin-cli -regtest getnewaddress)
 
