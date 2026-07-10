@@ -6,9 +6,10 @@ transaction="01000000000101c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d10
 block="25"
 address="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP" 
 utxo_txid=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.txid')
+utxo_vout=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.vout[] | select(.value==0.20000000) | .n')
 
 change_address=$(bitcoin-cli -regtest getnewaddress)
 
-rawtxhex=$(bitcoin-cli -regtest createrawtransaction '[{"txid":"'"$utxo_txid"'","vout":0,"sequence":4294967294},{"txid":"'"$utxo_txid"'","vout":1,"sequence":4294967294}]' '{"'"$address"'":0.20000000,"'"$change_address"'":0.03678108}' 2041)
+rawtxhex=$(bitcoin-cli -named -regtest  createrawtransaction '[{"txid":"'"$utxo_txid"'","vout":'"$utxo_vout"'}}]' '{"'"$address"'":0.20000000,"'"$change_address"'":0.03678108}' 2041)
 signed=$(bitcoin-cli -regtest signrawtransactionwithwallet "$rawtxhex" | jq -r '.hex')
 bitcoin-cli -regtest sendrawtransaction hexstring=$signed
