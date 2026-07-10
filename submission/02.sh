@@ -10,4 +10,4 @@ utxo_txid=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.t
 change_address=$(bitcoin-cli -regtest getnewaddress)
 
 rawtxhex=$(bitcoin-cli -regtest createrawtransaction '[{"txid":"'"$utxo_txid"'","vout":0,"sequence":4294967294},{"txid":"'"$utxo_txid"'","vout":1}]' '{"'"$address"'":0.20000000,"'"$change_address"'":0.03678108}' 2041)
-signed=$(bitcoin-cli -regtest signrawtransactionwithwallet "$rawtxhex" | jq -r '.hex')
+echo "$rawtxhex"
