@@ -7,8 +7,7 @@ block="25"
 address="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP" 
 decoded=$(bitcoin-cli -regtest decoderawtransaction "$transaction")
 utxo_txid=$(echo "$decoded" | jq -r '.txid')
-utxo_vout=$(echo "$decoded" | jq -r '.vout[] | select(.value==0.20000000) | .n')
 
-rawtxhex=$(bitcoin-cli -regtest createrawtransaction inputs='''[{"txid":"'''$utxo_txid'''","vout":'''$utxo_vout''',"sequence":4294967294}]''' outputs='''[{"'''$address'''":0.20000000}]''' locktime=2041)
+rawtxhex=$(bitcoin-cli -regtest createrawtransaction '[{"txid":"'"$utxo_txid"'","vout":0,"sequence":4294967294},{"txid":"'"$utxo_txid"'","vout":1,"sequence":4294967294}]' '{"'"$address"'":0.20000000,"'"$change_address"'":0.03678108}' 2041)
 signed=$(bitcoin-cli -regtest signrawtransactionwithwallet "$rawtxhex" | jq -r '.hex')
 bitcoin-cli -regtest sendrawtransaction "$signed"
