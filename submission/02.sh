@@ -7,7 +7,5 @@ block="25"
 address="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP" 
 utxo_txid=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.txid')
 
-change_address=$(bitcoin-cli -regtest getnewaddress)
-
 rawtxhex=$(bitcoin-cli -regtest createrawtransaction '[{"txid":"'"$utxo_txid"'","vout":0,"sequence":4294967294},{"txid":"'"$utxo_txid"'","vout":1,"sequence":4294967294}]' '{"'"$address"'":0.20000000}' 2041)
 echo "$rawtxhex"
