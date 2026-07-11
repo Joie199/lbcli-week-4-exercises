@@ -6,7 +6,8 @@ transaction="01000000000101c8b0928edebbec5e698d5f86d0474595d9f6a5b2e4e3772cd9d10
 recipient="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP" 
 change_address=$(bitcoin-cli -regtest getrawchangeaddress)
 txid=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.txid')
+utxo_vout0=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.vout[0].n')
+utxo_vout1=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.vout[1].n')
 
-rawtxhex=$(bitcoin-cli -regtest createrawtransaction '[{"txid":"'"$txid"'","vout":0,"sequence":1},{"txid":"'"$txid"'","vout":1,"sequence":1}]' '{"'"$recipient"'":0.20000000,"'"$change_address"'":0.03679108}' 2041)
-
+rawtxhex=$(bitcoin-cli -regtest createrawtransaction '[{"txid":"'"$txid"'","vout":'$utxo_vout0',"sequence":1},{"txid":"'"$txid"'","vout":'$utxo_vout1',"sequence":1}]' '{"'"$recipient"'":0.20000000,"'"$change_address"'":0.03679108}' 2041)
 echo "$rawtxhex"
