@@ -7,5 +7,5 @@ recipient="2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP"
 change_address=$(bitcoin-cli -regtest getrawchangeaddress)
 txid=$(bitcoin-cli -regtest decoderawtransaction "$transaction" | jq -r '.txid')
 
-rawtxhex=$(bitcoin-cli -regtest createrawtransaction '[{"txid":"'"$txid"'","vout":0,"sequence":4294967294},{"txid":"'"$txid"'","vout":1,"sequence":4294967294}]' '{"'"$recipient"'":0.20000000,"'"$change_address"'":0.03679108}' 2041)
+rawtxhex=$(bitcoin-cli -regtest -named createrawtransaction inputs='[{"txid":"23c19f37d4e92e9a115aab86e4edc1b92a51add4e0ed0034bb166314dde50e16","vout":0,"sequence":4294967294},{"txid":"23c19f37d4e92e9a115aab86e4edc1b92a51add4e0ed0034bb166314dde50e16","vout":1,"sequence":4294967294}]' outputs='{"2MvLcssW49n9atmksjwg2ZCMsEMsoj3pzUP":0.20000000,"'"$change_address"'":0.03679108}' locktime=2041)
 echo "$rawtxhex"
